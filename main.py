@@ -4,7 +4,7 @@ import pdfplumber
 
 def main():
     # Testing, but when done, make file be entered from cmd line
-    pdf_file = open_file("test_q.pdf")
+    pdf_file = open_file("test_file.pdf")
     extracted_text_arr = get_text(pdf_file)
 
     # Draft funcs
@@ -19,6 +19,19 @@ def open_file(f):
     
     return file
 
+
+def get_text(f):
+    lines_arr = []
+    with f as pdf:
+        for pg in pdf.pages:
+            pdf_text = pg.extract_text()
+            # \n to get each line
+            lines = pdf_text.split('\n')
+            for _, line in enumerate(lines):
+                lines_arr.append(line)
+    
+    return lines_arr
+    
 
 if __name__ == "__main__":
     main()
