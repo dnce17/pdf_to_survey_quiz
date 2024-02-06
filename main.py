@@ -5,7 +5,10 @@ import pdfplumber
 def main():
     # Testing, but when done, make file be entered from cmd line
     pdf_file = open_file("test_file.pdf")
-    extracted_text_arr = get_text(pdf_file)
+    text_arr = get_text(pdf_file)
+
+    # Compile questions, ans, and traits from arr into json
+    compile_quiz(text_arr)
 
     # Draft funcs
     # make_questions(extracted_text)
@@ -31,7 +34,10 @@ def get_text(f):
                 lines_arr.append(line)
     
     return lines_arr
-    
+
+
+def compile_quiz(text_arr)
+    ...
 
 if __name__ == "__main__":
     main()
