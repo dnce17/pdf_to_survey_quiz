@@ -1,6 +1,5 @@
 # Own files
-/test_file.txt
-/test_file.pdf
+/test_files
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
