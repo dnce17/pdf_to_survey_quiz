@@ -3,11 +3,12 @@ import pdfplumber
 
 
 IDENTIFIERS = ["• ", "o ", "▪ "]
+EDGE_CASE_ESCAPE = "~o "
 
 
 def main():
     # Testing, but when done, make file be entered from cmd line
-    pdf_file = open_file("test_files/test_file.pdf")
+    pdf_file = open_file("test_files/o_escape.pdf")
     text_arr = get_text(pdf_file)
     quiz_items = filter_text(text_arr)
 
@@ -67,8 +68,12 @@ def combine_frag(arr):
             # Append b/c "in IDENTIFIERS" means it's a new bullet (hence, new item in arr)
             updated_arr.append(item)
         else:
-            # Combine fragmented sentences together as 1 item in arr
-            updated_arr[-1] += f" {item}"
+            # ~o is escape char to differentiate b/w o sub-bullet vs starting o in new line
+            if item[0:3] == EDGE_CASE_ESCAPE:
+                updated_arr[-1] += f" {item.replace('~', '')}"
+            else:
+                # Combine fragmented sentences together as 1 item in arr
+                updated_arr[-1] += f" {item}"
     
     return updated_arr
 
