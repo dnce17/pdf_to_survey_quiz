@@ -53,7 +53,7 @@ def filter_text(arr):
 def remove_unrelated(arr):
     try:
         # Search ---questions-- case-insensitive
-        index = [item.lower() for item in arr].index('---questions---')
+        index = [item.lower().strip() for item in arr].index('---questions---')
     except ValueError:
         sys.exit("Ensure that ---questions--- is present in your PDF to help indicate where questions begin")
 
