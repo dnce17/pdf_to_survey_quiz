@@ -47,13 +47,13 @@ class Quiz:
     # PRIVATE METHODS
     @staticmethod
     def _ask_question(num, question):
-        print(f"Q{num + 1}) {question}")
+        print(f"Q{num + 1}) {question.strip()}")
     
     @staticmethod
     def _show_choices(choices_arr):
         for i, choice_trait in enumerate(choices_arr):
             choice = choice_trait[0]
-            print(f"{i + 1} - {choice}")
+            print(f"{i + 1} - {choice.strip()}")
     
     @staticmethod
     def _get_ans():
@@ -78,5 +78,5 @@ class Quizzee:
 # Testing Purposes
 if __name__ == "__main__":
     q = Quiz()
-    # Quiz.do_quiz()
+    Quiz.do_quiz()
     q.show_max_traits_total()
