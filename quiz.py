@@ -12,11 +12,20 @@ class Quiz:
         for i, question in enumerate(cls.data):
             # Ask 1 question at a time
             cls._ask_question(i, question["question"])
+
+            # Show choices for question
+            cls._show_choices(question["choices_and_traits"])
     
     # PRIVATE METHODS
     @staticmethod
     def _ask_question(num, question):
         print(f"Q{num + 1}) {question}")
+    
+    @staticmethod
+    def _show_choices(choices_arr):
+        for i, choice_role in enumerate(choices_arr):
+            choice = choice_role[0]
+            print(f"{i + 1} - {choice}")
 
 
 # Testing Purposes
