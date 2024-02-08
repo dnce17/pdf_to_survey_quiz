@@ -22,6 +22,26 @@ class Quiz:
                 ans = cls._get_ans()
                 if cls._validate_ans(ans, total_choices) == True:
                     break
+
+    # NONPRIVATE METHODS
+    # Get max total of each trait
+    @classmethod
+    def get_max_traits_total(cls):
+        traits = {}
+        for _, question in enumerate(cls.data):
+            for _, choice_trait in enumerate(question["choices_and_traits"]):
+                # [1:] b/c some choice linked with > 1 traits
+                for trait in choice_trait[1:]:
+                    if trait not in traits:
+                        traits[trait] = 1
+                    else:
+                        traits[trait] += 1
+
+        return dict(sorted(traits.items()))
+    
+    @classmethod
+    def show_max_traits_total(cls):
+        print(cls.get_max_traits_total())
     
     # PRIVATE METHODS
     @staticmethod
@@ -49,7 +69,13 @@ class Quiz:
         return True
 
 
+class Quizzee:
+    def __init__(self):
+        ...
+
+
 # Testing Purposes
 if __name__ == "__main__":
     q = Quiz()
-    Quiz.do_quiz()
+    # Quiz.do_quiz()
+    q.show_max_traits_total()
