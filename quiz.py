@@ -1,5 +1,6 @@
 import json
 import sys
+import re
 
 
 class Quiz:
@@ -79,12 +80,23 @@ class Quiz:
 
 
 class Quizzee:
-    def __init__(self):
-        ...
+    tested_traits = Quiz().get_all_traits()
 
+    def __init__(self):
+        # Create properties dynamatically based on traits in the quiz given
+        self._create_properties()
+        pass
+    
+    # PRIVATE METHODS
+    def _create_properties(self):
+        for trait in self.tested_traits:
+            setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
+        
 
 # Testing Purposes
 if __name__ == "__main__":
     q = Quiz()
     # Quiz.do_quiz()
-    q.show_all_traits()
+    # q.show_all_traits()
+    user = Quizzee()
+    print(vars(user))
