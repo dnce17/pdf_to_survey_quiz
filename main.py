@@ -1,5 +1,6 @@
 import sys
 import pdfplumber
+import json
 
 
 IDENTIFIERS = ["• ", "o ", "▪ "]
@@ -8,15 +9,13 @@ EDGE_CASE_ESCAPE = "~o "
 
 def main():
     # Testing, but when done, make file be entered from cmd line
-    pdf_file = open_file("test_files/o_escape.pdf")
+    pdf_file = open_file("test_files/test_file1.pdf")
+    # pdf_file = open_file("test_files/test_file3.pdf")
     text_arr = get_text(pdf_file)
     quiz_items = filter_text(text_arr)
 
     # Compile questions, ans, and traits from arr into json
-    compile_quiz(text_arr)
-
-    # Funcs to make next (subject to change)
-    # make_questions(extracted_text)
+    make_json(compile_quiz(quiz_items))
 
 
 def open_file(f):
@@ -47,8 +46,8 @@ def filter_text(arr):
 
     # Combine fragmented sentences that were split from line break
     quiz_items = combine_frag(first_filter)
-    for item in quiz_items:
-        print(item)
+
+    return quiz_items
 
 
 def remove_unrelated(arr):
@@ -78,11 +77,37 @@ def combine_frag(arr):
     return updated_arr
 
 
-def compile_quiz(text_arr):
-    ...
+def compile_quiz(arr):
+    dict_arr = []
+    dict = {
+        "question": "",
+        "choices_and_traits": []
+    }
 
-    # Read through each line of arr
-    # Add to json and make it a question, ans choice, or trait depending on leading bullet type (might add other list types too)
+    for i, line in enumerate(arr):
+        if line[0:2] == IDENTIFIERS[0]:
+            if i > 0:
+                dict_arr.append(dict.copy())
+
+            # Reset choices_and_traits if new question (aka new bullet)
+            dict["question"] = line[2:]
+            dict["choices_and_traits"] = []
+
+        elif line[0:2] == IDENTIFIERS[1]:
+            dict["choices_and_traits"].append([line[2:]])
+        elif line[0:2] == IDENTIFIERS[2]:
+            dict["choices_and_traits"][-1].append(line[2:].title())
+        
+        # Appends the last question to arr b/c no more new questions (bullets) after
+        if i == len(arr) - 1:
+            dict_arr.append(dict.copy())
+
+    return dict_arr
+
+
+def make_json(dict_arr):
+    with open('questions.json', 'w') as output:
+        json.dump(dict_arr, output, indent=2)
         
 
 if __name__ == "__main__":

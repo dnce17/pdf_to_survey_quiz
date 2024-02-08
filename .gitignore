@@ -1,5 +1,6 @@
 # Own files
 /test_files
+/questions.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
