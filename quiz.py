@@ -15,6 +15,13 @@ class Quiz:
 
             # Show choices for question
             cls._show_choices(question["choices_and_traits"])
+
+            # Loop until user enters elgible answer
+            while True:
+                total_choices = len(question["choices_and_traits"])
+                ans = cls._get_ans()
+                if cls._validate_ans(ans, total_choices) == True:
+                    break
     
     # PRIVATE METHODS
     @staticmethod
@@ -23,9 +30,23 @@ class Quiz:
     
     @staticmethod
     def _show_choices(choices_arr):
-        for i, choice_role in enumerate(choices_arr):
-            choice = choice_role[0]
+        for i, choice_trait in enumerate(choices_arr):
+            choice = choice_trait[0]
             print(f"{i + 1} - {choice}")
+    
+    @staticmethod
+    def _get_ans():
+        return input("Enter a number that corresponds with the choices: ")
+    
+    @staticmethod
+    def _validate_ans(ans, total_choices):
+        try:
+            if int(ans) not in range(1, total_choices + 1):
+                return False
+        except ValueError:
+            return False
+        
+        return True
 
 
 # Testing Purposes
