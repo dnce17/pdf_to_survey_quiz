@@ -32,10 +32,11 @@ class Quiz:
             for _, choice_trait in enumerate(question["choices_and_traits"]):
                 # [1:] b/c some choice linked with > 1 traits
                 for trait in choice_trait[1:]:
-                    if trait not in traits:
-                        traits[trait] = 1
+                    trait_striped = trait.strip()
+                    if trait_striped not in traits:
+                        traits[trait_striped] = 1
                     else:
-                        traits[trait] += 1
+                        traits[trait_striped] += 1
 
         return dict(sorted(traits.items()))
     
