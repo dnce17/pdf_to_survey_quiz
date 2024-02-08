@@ -43,6 +43,14 @@ class Quiz:
     @classmethod
     def show_max_traits_total(cls):
         print(cls.get_max_traits_total())
+
+    @classmethod
+    def get_all_traits(cls):
+        return [trait for trait in cls.get_max_traits_total()]
+    
+    @classmethod
+    def show_all_traits(cls):
+        print(cls.get_all_traits())
     
     # PRIVATE METHODS
     @staticmethod
@@ -78,5 +86,5 @@ class Quizzee:
 # Testing Purposes
 if __name__ == "__main__":
     q = Quiz()
-    Quiz.do_quiz()
-    q.show_max_traits_total()
+    # Quiz.do_quiz()
+    q.show_all_traits()
