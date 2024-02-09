@@ -74,26 +74,26 @@ class Quiz:
         return True
 
 
-# class Quizzee:
-#     tested_traits = Quiz().get_all_traits()
-
-#     def __init__(self):
-#         # Create properties dynamatically based on traits in the quiz given
-#         self._create_properties()
-#         pass
+class Quizzee(Quiz):
+    def __init__(self, quiz):
+        super().__init__(quiz)
+        # Create properties dynamatically based on traits in the quiz given
+        self._create_properties()
     
-#     # PRIVATE METHODS
-#     def _create_properties(self):
-#         for trait in self.tested_traits:
-#             setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
+    # PRIVATE METHODS
+    def _create_properties(self):
+        for trait in self.get_all_traits():
+            setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
         
 
 # Testing Purposes
 if __name__ == "__main__":
-    q = Quiz("questions.json")
-    q.show_all_traits()
-    q.show_max_traits_total()
-    q.do_quiz()
+    # q = Quiz("questions.json")
+    # q.show_all_traits()
+    # q.show_max_traits_total()
+    # q.do_quiz()
 
-    # user = Quizzee()
+    user = Quizzee("questions.json")
+    user.do_quiz()
+    # user.show_all_traits()
     # print(vars(user))
