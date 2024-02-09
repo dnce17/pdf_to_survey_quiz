@@ -4,12 +4,12 @@ import re
 
 
 class Quiz:
-    def __init__(self, data):
-        self.data = json.load(open(data))
+    def __init__(self, quiz):
+        self.quiz = json.load(open(quiz))
     
     # All questions and entering answers occur here
     def do_quiz(self):
-        for i, question in enumerate(self.data):
+        for i, question in enumerate(self.quiz):
             # Ask 1 question at a time
             self._ask_question(i, question["question"])
 
@@ -27,7 +27,7 @@ class Quiz:
     # Get max total of each trait
     def get_max_traits_total(self):
         traits = {}
-        for _, question in enumerate(self.data):
+        for _, question in enumerate(self.quiz):
             for _, choice_trait in enumerate(question["choices_and_traits"]):
                 # [1:] b/c some choice linked with > 1 traits
                 for trait in choice_trait[1:]:
