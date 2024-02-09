@@ -33,11 +33,11 @@ class Quiz:
             for _, choice_trait in enumerate(question["choices_and_traits"]):
                 # [1:] b/c some choice linked with > 1 traits
                 for trait in choice_trait[1:]:
-                    trait_striped = trait.strip()
-                    if trait_striped not in traits:
-                        traits[trait_striped] = 1
+                    trait_formatted = trait.strip().lower()
+                    if trait_formatted not in traits:
+                        traits[trait_formatted] = 1
                     else:
-                        traits[trait_striped] += 1
+                        traits[trait_formatted] += 1
 
         return dict(sorted(traits.items()))
     
@@ -98,5 +98,6 @@ if __name__ == "__main__":
     q = Quiz()
     # Quiz.do_quiz()
     # q.show_all_traits()
+    q.show_max_traits_total()
     user = Quizzee()
-    print(vars(user))
+    # print(vars(user))

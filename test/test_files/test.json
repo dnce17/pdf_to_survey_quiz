@@ -1,0 +1,54 @@
+[
+    {
+      "question": "     How have you been feeling the past two weeks?",
+      "choices_and_traits": [
+        [
+          "    Bad",
+          "    HiGh Risk "
+        ],
+        [
+          "   Ok",
+          "  ModErate RiSk"
+        ],
+        [
+          "Good",
+          " Low Risk"
+        ]
+      ]
+    },
+    {
+      "question": "     Have you recently found yourself losing interest in lots of activities that you used to love?",
+      "choices_and_traits": [
+        [
+          "Yes",
+          "HigH Risk"
+        ],
+        [
+          "No",
+          "Low Risk"
+        ]
+      ]
+    },
+    {
+      "question": "How would you describe your mood generally speaking for past two weeks?",
+      "choices_and_traits": [
+        [
+          "Fatigued",
+          "MOderate Risk"
+        ],
+        [
+          "Depressed",
+          "  High risK"
+        ],
+        [
+          "Indifferent/Neutral",
+          "No Risk",
+          "Moderate Risk"
+        ],
+        [
+          "Happy",
+          "  No Risk   "
+        ]
+      ]
+    }
+  ]
