@@ -4,32 +4,30 @@ import re
 
 
 class Quiz:
-    with open("questions.json") as file:
-        data = json.load(file)
+    def __init__(self, data):
+        self.data = json.load(open(data))
     
     # All questions and entering answers occur here
-    @classmethod
-    def do_quiz(cls):
-        for i, question in enumerate(cls.data):
+    def do_quiz(self):
+        for i, question in enumerate(self.data):
             # Ask 1 question at a time
-            cls._ask_question(i, question["question"])
+            self._ask_question(i, question["question"])
 
             # Show choices for question
-            cls._show_choices(question["choices_and_traits"])
+            self._show_choices(question["choices_and_traits"])
 
             # Loop until user enters elgible answer
             while True:
                 total_choices = len(question["choices_and_traits"])
-                ans = cls._get_ans()
-                if cls._validate_ans(ans, total_choices) == True:
+                ans = self._get_ans()
+                if self._validate_ans(ans, total_choices) == True:
                     break
 
     # NONPRIVATE METHODS
     # Get max total of each trait
-    @classmethod
-    def get_max_traits_total(cls):
+    def get_max_traits_total(self):
         traits = {}
-        for _, question in enumerate(cls.data):
+        for _, question in enumerate(self.data):
             for _, choice_trait in enumerate(question["choices_and_traits"]):
                 # [1:] b/c some choice linked with > 1 traits
                 for trait in choice_trait[1:]:
@@ -41,17 +39,14 @@ class Quiz:
 
         return dict(sorted(traits.items()))
     
-    @classmethod
-    def show_max_traits_total(cls):
-        print(cls.get_max_traits_total())
+    def show_max_traits_total(self):
+        print(self.get_max_traits_total())
 
-    @classmethod
-    def get_all_traits(cls):
-        return [trait for trait in cls.get_max_traits_total()]
+    def get_all_traits(self):
+        return [trait for trait in self.get_max_traits_total()]
     
-    @classmethod
-    def show_all_traits(cls):
-        print(cls.get_all_traits())
+    def show_all_traits(self):
+        print(self.get_all_traits())
     
     # PRIVATE METHODS
     @staticmethod
@@ -79,25 +74,26 @@ class Quiz:
         return True
 
 
-class Quizzee:
-    tested_traits = Quiz().get_all_traits()
+# class Quizzee:
+#     tested_traits = Quiz().get_all_traits()
 
-    def __init__(self):
-        # Create properties dynamatically based on traits in the quiz given
-        self._create_properties()
-        pass
+#     def __init__(self):
+#         # Create properties dynamatically based on traits in the quiz given
+#         self._create_properties()
+#         pass
     
-    # PRIVATE METHODS
-    def _create_properties(self):
-        for trait in self.tested_traits:
-            setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
+#     # PRIVATE METHODS
+#     def _create_properties(self):
+#         for trait in self.tested_traits:
+#             setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
         
 
 # Testing Purposes
 if __name__ == "__main__":
-    q = Quiz()
-    # Quiz.do_quiz()
-    # q.show_all_traits()
+    q = Quiz("questions.json")
+    q.show_all_traits()
     q.show_max_traits_total()
-    user = Quizzee()
+    q.do_quiz()
+
+    # user = Quizzee()
     # print(vars(user))
