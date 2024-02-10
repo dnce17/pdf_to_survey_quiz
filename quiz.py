@@ -4,8 +4,9 @@ import re
 
 
 class Quiz:
-    def __init__(self, quiz):
+    def __init__(self, quiz, quizzee=None):
         self.quiz = json.load(open(quiz))
+        self.quizzee = quizzee
     
     # All questions and entering answers occur here
     def do_quiz(self):
@@ -21,6 +22,8 @@ class Quiz:
                 total_choices = len(question["choices_and_traits"])
                 ans = self._get_ans()
                 if self._validate_ans(ans, total_choices) == True:
+                    trait_arr = question["choices_and_traits"][int(ans) - 1][1:]
+                    self.quizzee._add_trait_pts(*trait_arr)
                     break
 
     # NONPRIVATE METHODS
@@ -74,26 +77,25 @@ class Quiz:
         return True
 
 
-class Quizzee(Quiz):
-    def __init__(self, quiz):
-        super().__init__(quiz)
-        # Create properties dynamatically based on traits in the quiz given
-        self._create_properties()
+class Quizzee():
+    def __init__(self):
+        pass
     
-    # PRIVATE METHODS
-    def _create_properties(self):
-        for trait in self.get_all_traits():
+    # Create properties dynamatically based on traits in the quiz given
+    def traits_to_track(self, test_traits):
+        for trait in test_traits:
             setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
+    
+    # UNDER EDIT
+    def _add_trait_pts(self, *traits):
+        print("add trait pts working")
         
 
 # Testing Purposes
 if __name__ == "__main__":
-    # q = Quiz("questions.json")
-    # q.show_all_traits()
-    # q.show_max_traits_total()
-    # q.do_quiz()
+    user = Quizzee()
+    quiz = Quiz("questions.json", user)
+    user.traits_to_track(quiz.get_all_traits())
 
-    user = Quizzee("questions.json")
-    user.do_quiz()
-    # user.show_all_traits()
+    # quiz.do_quiz()
     # print(vars(user))

@@ -32,12 +32,15 @@ def test_combine_frag():
     assert combine_frag(test_arr[3]) == ["• I will oh oh open the door"]
     assert combine_frag(test_arr[4]) == ["• edge case o o o o o on new line"]
 
-# quiz.py test
 @pytest.fixture
 def q():
-    return Quiz("test/test_files/test.json")
+    user = Quizzee()
+    quiz = Quiz("test/test_files/test.json", user)
+    user.traits_to_track(quiz.get_all_traits())
+    return [quiz, user]
 
 def test_valid_ans(q):
+    q = q[0]
     total_choices = 5
     assert q._validate_ans("1", total_choices) == True
     assert q._validate_ans("5", total_choices) == True
@@ -48,19 +51,11 @@ def test_invalid_ans(q):
     total_choices = 8
     tests = ["-5", "0", "9", "15", "3.5", "9.0", "bob", "@#", "", "   ", "   3    p", "p    3"]
     for t in tests:
-        assert q._validate_ans(t, total_choices) == False
+        assert q[0]._validate_ans(t, total_choices) == False
 
 def test_get_max_traits_total(q):
     desired_results = {"high risk": 3, "low risk": 2, "moderate risk": 3, "no risk": 3, "filler 1 2 5   fill3r": 1}
-    assert q.get_max_traits_total() == dict(sorted(desired_results.items()))
+    assert q[0].get_max_traits_total() == dict(sorted(desired_results.items()))
 
-# quiz.py test
-@pytest.fixture
-def quizzee():
-    return Quizzee("test/test_files/test.json")
-
-def test_create_properties(quizzee):
-    quizzee._create_properties()
-    dict_props = vars(quizzee)
-    del dict_props["quiz"]
-    assert vars(quizzee) == {"_high_risk": 0, "_low_risk": 0, "_moderate_risk": 0, "_no_risk": 0, "_filler_1_2_5___fill3r": 0}
+def test_create_properties(q):
+    assert vars(q[1]) == {"_high_risk": 0, "_low_risk": 0, "_moderate_risk": 0, "_no_risk": 0, "_filler_1_2_5___fill3r": 0}
