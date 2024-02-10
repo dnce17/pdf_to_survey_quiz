@@ -1,6 +1,6 @@
 import pytest
 from main import remove_unrelated, combine_frag
-from quiz import Quiz
+from quiz import Quiz, Quizzee
 
 # main.py test
 def test_remove_unrelated():
@@ -51,5 +51,16 @@ def test_invalid_ans(q):
         assert q._validate_ans(t, total_choices) == False
 
 def test_get_max_traits_total(q):
-    desired_results = {'high risk': 3, 'low risk': 2, 'moderate risk': 3, 'no risk': 3}
+    desired_results = {"high risk": 3, "low risk": 2, "moderate risk": 3, "no risk": 3, "filler 1 2 5   fill3r": 1}
     assert q.get_max_traits_total() == dict(sorted(desired_results.items()))
+
+# quiz.py test
+@pytest.fixture
+def quizzee():
+    return Quizzee("test/test_files/test.json")
+
+def test_create_properties(quizzee):
+    quizzee._create_properties()
+    dict_props = vars(quizzee)
+    del dict_props["quiz"]
+    assert vars(quizzee) == {"_high_risk": 0, "_low_risk": 0, "_moderate_risk": 0, "_no_risk": 0, "_filler_1_2_5___fill3r": 0}
