@@ -35,7 +35,7 @@ def test_combine_frag():
 # quiz.py test
 @pytest.fixture
 def q():
-    return Quiz()
+    return Quiz("test/test_files/test.json")
 
 def test_valid_ans(q):
     total_choices = 5
@@ -49,3 +49,7 @@ def test_invalid_ans(q):
     tests = ["-5", "0", "9", "15", "3.5", "9.0", "bob", "@#", "", "   ", "   3    p", "p    3"]
     for t in tests:
         assert q._validate_ans(t, total_choices) == False
+
+def test_get_max_traits_total(q):
+    desired_results = {'high risk': 3, 'low risk': 2, 'moderate risk': 3, 'no risk': 3}
+    assert q.get_max_traits_total() == dict(sorted(desired_results.items()))
