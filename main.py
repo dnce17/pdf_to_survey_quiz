@@ -1,22 +1,35 @@
 import sys
 import pdfplumber
 import json
+from quiz import Quiz, Quizzee
 
 
 IDENTIFIERS = ["• ", "o ", "▪ "]
 EDGE_CASE_ESCAPE = "~o "
+DEFAULT_JSON_NAME = "questions.json"
 
 
 def main():
     if check_cmd_args() == False:
         sys.exit("usage: main.py path_to_file")
 
+    # Stage 1: Convert quiz to json
     pdf_file = open_file(sys.argv[1])
     text_arr = get_text(pdf_file)
     quiz_items = filter_text(text_arr)
 
     # Compile questions, ans, and traits from arr into json
     make_json(compile_quiz(quiz_items))
+
+    # Stage 2: Taking the quiz
+    while ready() == False:
+        continue
+
+    user = Quizzee()
+    quiz = Quiz(DEFAULT_JSON_NAME, user)
+    user.traits_to_track(quiz.get_all_traits())
+    
+    quiz.do_quiz()
 
 
 def check_cmd_args():
@@ -112,8 +125,12 @@ def compile_quiz(arr):
 
 
 def make_json(dict_arr):
-    with open('questions.json', 'w') as output:
+    with open(DEFAULT_JSON_NAME, 'w') as output:
         json.dump(dict_arr, output, indent=2)
+    
+
+def ready():
+    return True if input("Type and enter \"y\" to start the quiz: ").strip().lower() == "y" else False
         
 
 if __name__ == "__main__":

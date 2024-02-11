@@ -1,5 +1,4 @@
 import json
-import sys
 import re
 
 
@@ -107,5 +106,5 @@ if __name__ == "__main__":
     quiz = Quiz("questions.json", user)
     user.traits_to_track(quiz.get_all_traits())
 
-    # quiz.do_quiz()
-    # print(vars(user))
+    quiz.show_all_traits()
+    quiz.show_max_traits_total()
