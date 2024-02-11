@@ -8,14 +8,20 @@ EDGE_CASE_ESCAPE = "~o "
 
 
 def main():
-    # Testing, but when done, make file be entered from cmd line
-    pdf_file = open_file("test_files/test_file1.pdf")
-    # pdf_file = open_file("test_files/test_file3.pdf")
+    if check_cmd_args() == False:
+        sys.exit("usage: main.py path_to_file")
+
+    pdf_file = open_file(sys.argv[1])
     text_arr = get_text(pdf_file)
     quiz_items = filter_text(text_arr)
 
     # Compile questions, ans, and traits from arr into json
     make_json(compile_quiz(quiz_items))
+
+
+def check_cmd_args():
+    if len(sys.argv) != 2:
+        return False
 
 
 def open_file(f):
