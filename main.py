@@ -130,7 +130,13 @@ def make_json(dict_arr):
     
 
 def ready():
-    return True if input("Type and enter \"y\" to start the quiz: ").strip().lower() == "y" else False
+    ask_ready = input("Type and enter \"y\" to start the quiz: ").strip().lower()
+    if ask_ready in ["y", "yes"]:
+        return True
+    elif ask_ready in ["n", "no"]:
+        sys.exit("\nQuizzee not ready. Exiting program...\n")
+    else:
+        return False
         
 
 if __name__ == "__main__":

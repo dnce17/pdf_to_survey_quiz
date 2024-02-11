@@ -26,6 +26,7 @@ class Quiz:
                     break
         
         self.quizzee._show_results()
+        print()
 
     # NONPRIVATE METHODS
     # Get max total of each trait
@@ -55,7 +56,7 @@ class Quiz:
     # PRIVATE METHODS
     @staticmethod
     def _ask_question(num, question):
-        print(f"Q{num + 1}) {question.strip()}")
+        print(f"\nQ{num + 1}) {question.strip()}")
     
     @staticmethod
     def _show_choices(choices_arr):
