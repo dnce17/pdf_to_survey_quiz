@@ -25,6 +25,8 @@ class Quiz:
                     trait_arr = question["choices_and_traits"][int(ans) - 1][1:]
                     self.quizzee._add_trait_pts(*trait_arr)
                     break
+        
+        self.quizzee._show_results()
 
     # NONPRIVATE METHODS
     # Get max total of each trait
@@ -87,12 +89,17 @@ class Quizzee():
             setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
     
     def _add_trait_pts(self, *traits):
-        # print("add trait pts working")
         for trait in [trait.strip().lower() for trait in traits]:
-            prop_name = f"_{trait.replace(' ', '_')}"
+            prop_name = f"_{re.sub(r'[ -]', '_', trait)}"
             trait_prop = getattr(self, prop_name)
             setattr(self, prop_name, trait_prop + 1)
-        
+
+    def _show_results(self):
+        results_list = sorted(vars(self).items(), key=lambda role: role[1], reverse=True)
+        print("\nRESULTS:")
+        for role in dict(results_list):
+            print(f"{role.lstrip('_').title().replace('_', ' ')}: {vars(self)[role]}")
+
 
 # Testing Purposes
 if __name__ == "__main__":
@@ -100,5 +107,5 @@ if __name__ == "__main__":
     quiz = Quiz("questions.json", user)
     user.traits_to_track(quiz.get_all_traits())
 
-    quiz.do_quiz()
-    print(vars(user))
+    # quiz.do_quiz()
+    # print(vars(user))
