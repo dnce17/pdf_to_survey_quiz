@@ -36,7 +36,6 @@ def test_combine_frag():
 def q():
     user = Quizzee()
     quiz = Quiz("test/test_files/test.json", user)
-    user.traits_to_track(quiz.get_all_traits())
     return [quiz, user]
 
 def test_valid_ans(q):
@@ -57,5 +56,21 @@ def test_get_max_traits_total(q):
     desired_results = {"high risk": 3, "low risk": 2, "moderate risk": 3, "no risk": 3, "filler 1 2 5   fill3r": 1}
     assert q[0].get_max_traits_total() == dict(sorted(desired_results.items()))
 
-def test_create_properties(q):
+def test_traits_to_track(q):
+    q[1].traits_to_track(q[0].get_all_traits())
     assert vars(q[1]) == {"_high_risk": 0, "_low_risk": 0, "_moderate_risk": 0, "_no_risk": 0, "_filler_1_2_5___fill3r": 0}
+
+def test_add_trait_pts(q):
+    tests = [
+        "high risk",
+        "moderate risk",
+        "   hiGH riSk   ",
+        " lOw Risk",
+        "no risk",
+        " LOW RISK",
+        "   filler 1 2 5   fill3r    ",
+        " LoW RISK "
+    ]
+    q[1].traits_to_track(q[0].get_all_traits())
+    q[1]._add_trait_pts(*tests)
+    assert vars(q[1]) == {"_high_risk": 2, "_low_risk": 3, "_moderate_risk": 1, "_no_risk": 1, "_filler_1_2_5___fill3r": 1}

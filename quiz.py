@@ -86,9 +86,12 @@ class Quizzee():
         for trait in test_traits:
             setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
     
-    # UNDER EDIT
     def _add_trait_pts(self, *traits):
-        print("add trait pts working")
+        # print("add trait pts working")
+        for trait in [trait.strip().lower() for trait in traits]:
+            prop_name = f"_{trait.replace(' ', '_')}"
+            trait_prop = getattr(self, prop_name)
+            setattr(self, prop_name, trait_prop + 1)
         
 
 # Testing Purposes
@@ -97,5 +100,5 @@ if __name__ == "__main__":
     quiz = Quiz("questions.json", user)
     user.traits_to_track(quiz.get_all_traits())
 
-    # quiz.do_quiz()
-    # print(vars(user))
+    quiz.do_quiz()
+    print(vars(user))
