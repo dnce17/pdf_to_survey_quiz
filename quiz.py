@@ -50,8 +50,12 @@ class Quiz:
     def get_all_traits(self):
         return [trait for trait in self.get_max_traits_total()]
     
-    def show_all_traits(self):
-        print(self.get_all_traits())
+    def show_all_traits(self, ordered_list = False):
+        if ordered_list == True:
+            for i, item in enumerate(self.get_all_traits()):
+                print(f"{i + 1}) {item}")
+        else:
+            print(self.get_all_traits())
     
     # PRIVATE METHODS
     @staticmethod

@@ -21,14 +21,25 @@ def main():
     # Compile questions, ans, and traits from arr into json
     make_json(compile_quiz(quiz_items))
 
-    # Stage 2: Taking the quiz
-    while ready() == False:
-        continue
-
+    # Stage 2: Ensure traits to track are correct
     user = Quizzee()
     quiz = Quiz(DEFAULT_JSON_NAME, user)
+
+    quiz.show_all_traits(ordered_list = True)
+    while ask_user(
+        "Are the traits to be tracked correct? Type and enter y/n: ", 
+        "\nExiting program....Ensure your PDF doc has no misspelled traits and is correctly formatted.\n"
+    ) == False:
+        continue
+
+    # Stage 3: Doing quiz
+    while ask_user(
+        "Type \"y\" to start the quiz or \"n\" if not: ",
+        "\nExiting program....Quizzee not ready yet.\n"
+    ) == False:
+        continue
+
     user.traits_to_track(quiz.get_all_traits())
-    
     quiz.do_quiz()
 
 
@@ -127,17 +138,17 @@ def compile_quiz(arr):
 def make_json(dict_arr):
     with open(DEFAULT_JSON_NAME, 'w') as output:
         json.dump(dict_arr, output, indent=2)
-    
 
-def ready():
-    ask_ready = input("Type and enter \"y\" to start the quiz: ").strip().lower()
-    if ask_ready in ["y", "yes"]:
+
+def ask_user(prompt_msg, exit_msg):
+    prompt = input(prompt_msg).strip().lower()
+    if prompt in ["y", "yes"]:
         return True
-    elif ask_ready in ["n", "no"]:
-        sys.exit("\nQuizzee not ready. Exiting program...\n")
+    elif prompt in ["n", "no"]:
+        sys.exit(exit_msg)
     else:
         return False
-        
+
 
 if __name__ == "__main__":
     main()
