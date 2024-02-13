@@ -2,9 +2,14 @@ import sys
 import pdfplumber
 import json
 from quiz import Quiz, Quizzee
+from itertools import chain
 
 
-IDENTIFIERS = ["• ", "o ", "▪ "]
+IDENTIFIERS = {
+    "bullets": ["• ", "● "],
+    "sub_bullets_1": ["o ", "○ "],
+    "sub_bullets_2": ["▪ ", "■ "]
+}
 EDGE_CASE_ESCAPE = "~o "
 DEFAULT_JSON_NAME = "questions.json"
 
@@ -61,7 +66,7 @@ def get_text(f):
     lines_arr = []
     with f as pdf:
         for pg in pdf.pages:
-            pdf_text = pg.extract_text()
+            pdf_text = pg.extract_text(x_tolerance=1)
             # \n to get each line
             lines = pdf_text.split('\n')
             for _, line in enumerate(lines):
@@ -93,7 +98,7 @@ def remove_unrelated(arr):
 def combine_frag(arr):
     updated_arr = []
     for _, item in enumerate(arr):
-        if item[0:2] in IDENTIFIERS:
+        if item[0:2] in list(chain(*IDENTIFIERS.values())):
             # Append b/c "in IDENTIFIERS" means it's a new bullet (hence, new item in arr)
             updated_arr.append(item)
         else:
@@ -115,7 +120,7 @@ def compile_quiz(arr):
     }
 
     for i, line in enumerate(arr):
-        if line[0:2] == IDENTIFIERS[0]:
+        if line[0:2] in IDENTIFIERS["bullets"]:
             if i > 0:
                 dict_arr.append(dict.copy())
 
@@ -123,9 +128,9 @@ def compile_quiz(arr):
             dict["question"] = line[2:]
             dict["choices_and_traits"] = []
 
-        elif line[0:2] == IDENTIFIERS[1]:
+        elif line[0:2] in IDENTIFIERS["sub_bullets_1"]:
             dict["choices_and_traits"].append([line[2:]])
-        elif line[0:2] == IDENTIFIERS[2]:
+        elif line[0:2] in IDENTIFIERS["sub_bullets_2"]:
             dict["choices_and_traits"][-1].append(line[2:].title())
         
         # Appends the last question to arr b/c no more new questions (bullets) after
