@@ -91,6 +91,9 @@ class Quizzee():
     def traits_to_track(self, test_traits):
         for trait in test_traits:
             setattr(self, f"_{re.sub(r'[ -]', '_', trait).lower()}", 0)
+
+    def get_results(self):
+        return sorted(vars(self).items(), key=lambda trait: trait[1], reverse=True)
     
     def _add_trait_pts(self, *traits):
         for trait in [trait.strip().lower() for trait in traits]:
@@ -110,6 +113,10 @@ if __name__ == "__main__":
     user = Quizzee()
     quiz = Quiz("questions.json", user)
     user.traits_to_track(quiz.get_all_traits())
+    user._moderate_risk = 5
+    user._high_risk = 3
+    user._low_risk = 8 
 
-    quiz.show_all_traits()
-    quiz.show_max_traits_total()
+    # quiz.show_all_traits()
+    # quiz.show_max_traits_total()
+    print(user.get_results())
