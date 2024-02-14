@@ -13,6 +13,7 @@ IDENTIFIERS = {
 }
 EDGE_CASE_ESCAPE = "~o "
 DEFAULT_JSON_NAME = "questions.json"
+ARGV_LEN = [2,4]
 
 
 def main():
@@ -45,6 +46,8 @@ def main():
     ) == False:
         continue
 
+    if len(sys.argv) == 4:
+
     user.traits_to_track(quiz.get_all_traits())
     quiz.do_quiz()
 
@@ -59,7 +62,7 @@ def check_cmd_args(cmd_args):
     
 
 def check_argv_len(cmd_args):
-    if len(cmd_args) not in [2, 4]:
+    if len(cmd_args) not in ARGV_LEN:
         return False
 
 
