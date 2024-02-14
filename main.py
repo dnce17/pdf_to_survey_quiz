@@ -67,7 +67,7 @@ def main():
 
 def check_cmd_args(cmd_args):
     if check_argv_len(cmd_args) == False:
-        return "usage: main.py path_to_file [csv_path_to_save_to] [result_header_name]"
+        return "usage: main.py path_to_file [csv_file_to_save_to] [result_header_name]"
     elif len(cmd_args) == 4 and has_csv_ext(cmd_args[2]) == False:
         return "Exiting program....Ensure csv file to save to has .csv extension"
     
