@@ -58,7 +58,7 @@ def main():
                 break
 
         # Create directory to store csv if nonexistent
-        csv_dir_name = "csv_file"
+        csv_dir_name = "csv_files"
         if check_path_exist(csv_dir_name) == False:
             create_csv_dir(csv_dir_name)
         
@@ -233,11 +233,4 @@ def add_csv_headers(file, result_header):
 
 
 if __name__ == "__main__":
-    # main()
-
-    # TESTING
-    if check_path_exist("csv_files") == False:
-        create_csv_dir("csv_files")
-    if check_path_exist(sys.argv[2]) == False:
-        create_csv_file(sys.argv[2])
-        add_csv_headers(f"csv_files/{sys.argv[2]}", sys.argv[3])
+    main()
