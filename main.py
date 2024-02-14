@@ -1,4 +1,5 @@
 import sys
+import csv
 import os
 import pdfplumber
 import json
@@ -58,12 +59,20 @@ def main():
 
         # Create directory to store csv if nonexistent
         csv_dir_name = "csv_file"
-        if check_csv_dir_exist(csv_dir_name) == False:
+        if check_path_exist(csv_dir_name) == False:
             create_csv_dir(csv_dir_name)
         
-        # Create csv file to store results
+        # CHECKPOINT
+        # Create csv file if it does not exist
+        csv_file = sys.argv[2]
+        if check_path_exist(csv_file) == False:
+            create_csv_file(csv_file)
 
+            # Add header to file
+            
 
+        # Store highest result
+            
 
 def check_cmd_args(cmd_args):
     if check_argv_len(cmd_args) == False:
@@ -199,16 +208,28 @@ def confirm_name(name):
         return True if confirmation in ["y", "yes"] else False
 
 
-def check_csv_dir_exist(dir_name):
-    return True if os.path.exists(dir_name) else False
+def check_path_exist(path):
+    return True if os.path.exists(path) else False
         
 
 def create_csv_dir(dir_name):
-        os.makedirs(dir_name)
-        print("A new directory has been created named 'csv_files'")
+    os.makedirs(dir_name)
+    print("A new directory has been created named 'csv_files'")
+
+
+def create_csv_file(file_name):
+    try:
+        file = open(f"csv_files/{file_name}", "x")
+        file.close()
+    except FileExistsError:
+        return
 
 
 if __name__ == "__main__":
     # main()
-    if check_csv_dir_exist("csv_files") == False:
+
+    # TESTING
+    if check_path_exist("csv_files") == False:
         create_csv_dir("csv_files")
+    if check_path_exist(sys.argv[2]) == False:
+        create_csv_file(sys.argv[2])
