@@ -1,4 +1,5 @@
 import sys
+import os
 import pdfplumber
 import json
 from quiz import Quiz, Quizzee
@@ -15,8 +16,8 @@ DEFAULT_JSON_NAME = "questions.json"
 
 
 def main():
-    if check_cmd_args() == False:
-        sys.exit("usage: main.py path_to_file")
+    if argv_issue := check_cmd_args(sys.argv):
+        sys.exit(argv_issue)
 
     # Stage 1: Convert quiz to json
     pdf_file = open_file(sys.argv[1])
@@ -48,8 +49,22 @@ def main():
     quiz.do_quiz()
 
 
-def check_cmd_args():
-    if len(sys.argv) != 2:
+def check_cmd_args(cmd_args):
+    if check_argv_len(cmd_args) == False:
+        print("error 1")
+        return "usage: main.py path_to_file [csv_path_to_save_to] [result_header_name]"
+    elif len(cmd_args) == 4 and has_csv_ext(cmd_args[2]) == False:
+        print("error 2")
+        return "Exiting program....Ensure csv file to save to has .csv extension"
+    
+
+def check_argv_len(cmd_args):
+    if len(cmd_args) not in [2, 4]:
+        return False
+
+
+def has_csv_ext(csv_file_name):
+    if os.path.splitext(csv_file_name)[1] != ".csv":
         return False
 
 
@@ -57,7 +72,7 @@ def open_file(f):
     try:
         file = pdfplumber.open(f)
     except FileNotFoundError: 
-        sys.exit("File not found")
+        sys.exit("File not found. Also ensure that extension is .pdf")
     
     return file
 
@@ -157,3 +172,5 @@ def ask_user(prompt_msg, exit_msg):
 
 if __name__ == "__main__":
     main()
+    # if argv_issue := check_cmd_args(sys.argv):
+    #     sys.exit(argv_issue)

@@ -1,8 +1,24 @@
 import pytest
-from main import remove_unrelated, combine_frag
+from main import check_argv_len, remove_unrelated, combine_frag
 from quiz import Quiz, Quizzee
 
 # main.py test
+def test_check_argv_len():
+    valid_tests = [
+        ["main.py", "path_to_file.pdf"],
+        ["main.py", "path_to_file.pdf", "csv_file.csv", "risk level"] 
+    ]
+    invalid_tests = [
+        ["main.py"],
+        ["main.py", "path_to_file.pdf", "csv_file.csv"],
+        ["main.py", "path_to_file.pdf", "csv_file.csv", "risk level", "filler"]
+    ]
+
+    for test in valid_tests:
+        assert check_argv_len(test) is not False
+    for test in invalid_tests:
+        assert check_argv_len(test) == False
+
 def test_remove_unrelated():
     test_arr = [
         ["filler", "FILLER", "---questions---", "something"],
