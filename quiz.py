@@ -102,7 +102,7 @@ class Quizzee():
             setattr(self, prop_name, trait_prop + 1)
 
     def _show_results(self):
-        results_list = sorted(vars(self).items(), key=lambda role: role[1], reverse=True)
+        results_list = self.get_results()
         print("\nRESULTS:")
         for role in dict(results_list):
             print(f"{role.lstrip('_').title().replace('_', ' ')}: {vars(self)[role]}")
@@ -119,4 +119,5 @@ if __name__ == "__main__":
 
     # quiz.show_all_traits()
     # quiz.show_max_traits_total()
-    print(user.get_results())
+    # print(user.get_results())
+    user._show_results()
