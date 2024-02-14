@@ -45,16 +45,24 @@ def main():
         "\nExiting program....Quizzee not ready yet.\n"
     ) == False:
         continue
-    
-    # Only ask name if results will be saved
+
+    user.traits_to_track(quiz.get_all_traits())
+    quiz.do_quiz()
+
+    # Stage 4: Save result to csv file, if desired
     if len(sys.argv) == 4:
         while True:
             name = get_name()
             if confirm_name(" ".join(name)) == True:
                 break
 
-    user.traits_to_track(quiz.get_all_traits())
-    quiz.do_quiz()
+        # Create directory to store csv if nonexistent
+        csv_dir_name = "csv_file"
+        if check_csv_dir_exist(csv_dir_name) == False:
+            create_csv_dir(csv_dir_name)
+        
+        # Create csv file to store results
+
 
 
 def check_cmd_args(cmd_args):
@@ -191,5 +199,16 @@ def confirm_name(name):
         return True if confirmation in ["y", "yes"] else False
 
 
+def check_csv_dir_exist(dir_name):
+    return True if os.path.exists(dir_name) else False
+        
+
+def create_csv_dir(dir_name):
+        os.makedirs(dir_name)
+        print("A new directory has been created named 'csv_files'")
+
+
 if __name__ == "__main__":
-    main()
+    # main()
+    if check_csv_dir_exist("csv_files") == False:
+        create_csv_dir("csv_files")
