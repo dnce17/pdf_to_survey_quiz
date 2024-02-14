@@ -62,16 +62,17 @@ def main():
         if check_path_exist(csv_dir_name) == False:
             create_csv_dir(csv_dir_name)
         
-        # CHECKPOINT
         # Create csv file if it does not exist
         csv_file = sys.argv[2]
-        if check_path_exist(csv_file) == False:
+        if check_path_exist(f"csv_files/{csv_file}") == False:
             create_csv_file(csv_file)
 
             # Add header to file
             add_csv_headers(f"csv_files/{csv_file}", sys.argv[3])
 
         # Store highest result
+        fieldnames = ["first_name", "last_name", sys.argv[3], "result_val"]
+        store_results(name, user.get_results()[0], f"csv_files/{csv_file}", sys.argv[3], fieldnames)
             
 
 def check_cmd_args(cmd_args):
@@ -226,10 +227,21 @@ def create_csv_file(file_name):
 
 
 def add_csv_headers(file, result_header):
-    with open(file, "w") as file:
+    with open(file, "a") as file:
         fieldnames = ["first_name", "last_name", result_header, "result_val"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
+
+
+def store_results(name, result, csv_file, result_header, header_names):
+    with open(csv_file, "a", newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=header_names)
+        writer.writerow({
+            "first_name": name[0], 
+            "last_name": name[1],
+            result_header: result[0],
+            "result_val": result[1]
+        })
 
 
 if __name__ == "__main__":
