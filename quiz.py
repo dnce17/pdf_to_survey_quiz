@@ -104,8 +104,8 @@ class Quizzee():
     def _show_results(self):
         results_list = self.get_results()
         print("\nRESULTS:")
-        for role in dict(results_list):
-            print(f"{role.lstrip('_').title().replace('_', ' ')}: {vars(self)[role]}")
+        for trait in dict(results_list):
+            print(f"{trait.lstrip('_').title().replace('_', ' ')}: {vars(self)[trait]}")
 
 
 # Testing Purposes
