@@ -69,7 +69,7 @@ def main():
             create_csv_file(csv_file)
 
             # Add header to file
-            
+            add_csv_headers(f"csv_files/{csv_file}", sys.argv[3])
 
         # Store highest result
             
@@ -225,6 +225,13 @@ def create_csv_file(file_name):
         return
 
 
+def add_csv_headers(file, result_header):
+    with open(file, "w") as file:
+        fieldnames = ["first_name", "last_name", result_header, "result_val"]
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+
+
 if __name__ == "__main__":
     # main()
 
@@ -233,3 +240,4 @@ if __name__ == "__main__":
         create_csv_dir("csv_files")
     if check_path_exist(sys.argv[2]) == False:
         create_csv_file(sys.argv[2])
+        add_csv_headers(f"csv_files/{sys.argv[2]}", sys.argv[3])
