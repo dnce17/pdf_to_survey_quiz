@@ -45,8 +45,13 @@ def main():
         "\nExiting program....Quizzee not ready yet.\n"
     ) == False:
         continue
-
+    
+    # Only ask name if results will be saved
     if len(sys.argv) == 4:
+        while True:
+            name = get_name()
+            if confirm_name(" ".join(name)) == True:
+                break
 
     user.traits_to_track(quiz.get_all_traits())
     quiz.do_quiz()
@@ -54,10 +59,8 @@ def main():
 
 def check_cmd_args(cmd_args):
     if check_argv_len(cmd_args) == False:
-        print("error 1")
         return "usage: main.py path_to_file [csv_path_to_save_to] [result_header_name]"
     elif len(cmd_args) == 4 and has_csv_ext(cmd_args[2]) == False:
-        print("error 2")
         return "Exiting program....Ensure csv file to save to has .csv extension"
     
 
@@ -173,7 +176,20 @@ def ask_user(prompt_msg, exit_msg):
         return False
 
 
+def get_name():
+    first_name = input("First Name: ").strip().title()
+    last_name = input("Last Name: ").strip().title()
+    return [first_name, last_name]
+
+
+def confirm_name(name):
+    while True:
+        confirmation = input(f"Is {name} correct? Type and enter y/n: ").strip().lower()
+        if confirmation not in ["y", "yes", "n", "no"]:
+            continue
+        
+        return True if confirmation in ["y", "yes"] else False
+
+
 if __name__ == "__main__":
     main()
-    # if argv_issue := check_cmd_args(sys.argv):
-    #     sys.exit(argv_issue)

@@ -1,5 +1,5 @@
 import pytest
-from main import check_argv_len, remove_unrelated, combine_frag
+from main import check_argv_len, confirm_name, remove_unrelated, combine_frag
 from quiz import Quiz, Quizzee
 
 # main.py test
@@ -18,6 +18,15 @@ def test_check_argv_len():
         assert check_argv_len(test) is not False
     for test in invalid_tests:
         assert check_argv_len(test) == False
+
+def test_confirm_name(monkeypatch):
+    for test in ["y", "yes", "  y ", " yES"]:
+        monkeypatch.setattr('builtins.input', lambda _: test)
+        assert confirm_name("some name") == True
+
+    for test in ["n", "no", "  N ", "nO  "]:
+        monkeypatch.setattr('builtins.input', lambda _: test)
+        assert confirm_name("some name") == False
 
 def test_remove_unrelated():
     test_arr = [
