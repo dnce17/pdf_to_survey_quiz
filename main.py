@@ -14,7 +14,7 @@ IDENTIFIERS = {
 }
 EDGE_CASE_ESCAPE = "~o "
 DEFAULT_JSON_NAME = "questions.json"
-ARGV_LEN = [2,4]
+ARGV_LEN = [2,3]
 
 
 def main():
@@ -51,7 +51,7 @@ def main():
     quiz.do_quiz()
 
     # Stage 4: Save result to csv file, if desired
-    if len(sys.argv) == 4:
+    if len(sys.argv) == max(ARGV_LEN):
         while True:
             name = get_name()
             if confirm_name(" ".join(name)) == True:
@@ -77,8 +77,8 @@ def main():
 
 def check_cmd_args(cmd_args):
     if check_argv_len(cmd_args) == False:
-        return "usage: main.py path_to_file [csv_file_to_save_to] [result_header_name]"
-    elif len(cmd_args) == 4 and has_csv_ext(cmd_args[2]) == False:
+        return "usage: main.py path_to_file [csv_file_to_save_to]"
+    elif len(cmd_args) == max(ARGV_LEN) and has_csv_ext(cmd_args[2]) == False:
         return "Exiting program....Ensure csv file to save to has .csv extension"
     
 

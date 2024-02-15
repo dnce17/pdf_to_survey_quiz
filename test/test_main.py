@@ -6,12 +6,11 @@ from quiz import Quiz, Quizzee
 def test_check_argv_len():
     valid_tests = [
         ["main.py", "path_to_file.pdf"],
-        ["main.py", "path_to_file.pdf", "csv_file.csv", "risk level"] 
+        ["main.py", "path_to_file.pdf", "csv_file.csv"] 
     ]
     invalid_tests = [
         ["main.py"],
-        ["main.py", "path_to_file.pdf", "csv_file.csv"],
-        ["main.py", "path_to_file.pdf", "csv_file.csv", "risk level", "filler"]
+        ["main.py", "path_to_file.pdf", "csv_file.csv", "filler"]
     ]
 
     for test in valid_tests:
