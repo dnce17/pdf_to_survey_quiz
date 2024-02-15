@@ -64,15 +64,15 @@ def main():
         
         # Create csv file if it does not exist
         csv_file = sys.argv[2]
+        fieldnames = create_fieldnames(["first_name", "last_name"], sorted(user.get_results(), key=lambda trait: trait, reverse=True))
         if check_path_exist(f"csv_files/{csv_file}") == False:
             create_csv_file(csv_file)
 
             # Add header to file
-            add_csv_headers(f"csv_files/{csv_file}", sys.argv[3])
+            add_csv_headers(f"csv_files/{csv_file}", fieldnames)
 
         # Store highest result
-        fieldnames = ["first_name", "last_name", sys.argv[3], "result_val"]
-        store_results(name, user.get_results()[0], f"csv_files/{csv_file}", sys.argv[3], fieldnames)
+        store_results(name, user.get_results(), f"csv_files/{csv_file}", fieldnames)
             
 
 def check_cmd_args(cmd_args):
@@ -215,7 +215,6 @@ def check_path_exist(path):
 
 def create_csv_dir(dir_name):
     os.makedirs(dir_name)
-    print("A new directory has been created named 'csv_files'")
 
 
 def create_csv_file(file_name):
@@ -226,22 +225,26 @@ def create_csv_file(file_name):
         return
 
 
-def add_csv_headers(file, result_header):
+def create_fieldnames(*arrs):
+    finished_arr = []
+    for arr in arrs:
+        finished_arr.extend(arr)
+    return finished_arr
+
+
+def add_csv_headers(file, header_names):
     with open(file, "a") as file:
-        fieldnames = ["first_name", "last_name", result_header, "result_val"]
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer = csv.DictWriter(file, fieldnames=header_names)
         writer.writeheader()
 
 
-def store_results(name, result, csv_file, result_header, header_names):
+def store_results(name, result, csv_file, header_names):
     with open(csv_file, "a", newline='') as file:
         writer = csv.DictWriter(file, fieldnames=header_names)
-        writer.writerow({
-            "first_name": name[0], 
-            "last_name": name[1],
-            result_header: result[0],
-            "result_val": result[1]
-        })
+        row_info = {"first_name": name[0], "last_name": name[1]}
+        row_info.update(dict(result))
+
+        writer.writerow(row_info)
 
 
 if __name__ == "__main__":
