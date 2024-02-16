@@ -20,7 +20,7 @@ This program allows users to process personalized quizzes made in text processor
 ### <u>Guidelines To Ensure PDF File Processes Correctly</u>
 * Currently, the program only supports the use of the following bullet style:
 
-![Dark circle bullets with its next two sub-bullets](README_assets/bullet_style.png)
+<img src="README_assets/bullet_style.png" alt="Dark circle bullets with its next two sub-bullets" width=90>
 
 * Add ---Questions--- <b>(case-insensitive)</b> right before the questions begins 
     * this helps the program know where questions begin
@@ -28,16 +28,17 @@ This program allows users to process personalized quizzes made in text processor
 * Each answer choice can have <b>1 or more</b> traits associated with it and is case-insensitive 
     * e.g. "lOw RiSK" is treated the same as "low risk"
 * Having none or any empty lines between questions, answer choices, and/or traits will still process fine
-* CAUTION
-    * Having any unbulleted characters between bullets and/or sub-bullets that are not intended to be part of a question, answer choice, and/or trait before it will not raise errors, but text display issues with the quiz
 
-<img src="README_assets/unbulleted_item_err.png" alt="Example of unbulleted character error" width="500">
+#### CAUTION
+* Having any unbulleted characters between bullets and/or sub-bullets that are not intended to be part of a question, answer choice, and/or trait before it will not raise errors, but text display issues with the quiz
 
-    * If there's a line starting with lowercase o by itself (example below) regardless from text wrap or intentional line break, put a ~ before it. The ~ will not appear when users take the quiz. 
-        * Reason: o is sometimes treated as a sub-bullet, so ~ lets the program know that the line beginning with o is part of the sentence before it.
-        * You do <b>NOT</b> need ~ if o is part of a larger word or has punctuation 
-            * e.g. "oo", "oh", "octopus", "o,", "o?" does not count
-            
+![Example of unbulleted character error](README_assets/unbulleted_item_err.png)
+
+* If there's a line starting with lowercase o by itself (example below) regardless from text wrap or intentional line break, put a ~ before it. The ~ will not appear when users take the quiz. 
+    * Reason: o is sometimes treated as a sub-bullet, so ~ lets the program know that the line beginning with o is part of the sentence before it.
+    * You do <b>NOT</b> need ~ if o is part of a larger word or has punctuation 
+        * e.g. "oo", "oh", "octopus", "o,", "o?" does not count
+
 ![Example of using ~o](README_assets/o_escape.png)
 
 * Click the links below to see a template and some examples
