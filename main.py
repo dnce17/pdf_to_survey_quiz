@@ -1,3 +1,5 @@
+# Below code needed to allow non-ASCII char like dark circle bullet or else error
+# -*- coding: utf-8 -*-
 import sys
 import csv
 import os
