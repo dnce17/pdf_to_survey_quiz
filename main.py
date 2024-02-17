@@ -79,7 +79,7 @@ def main():
 
 def check_cmd_args(cmd_args):
     if check_argv_len(cmd_args) == False:
-        return "usage: main.py path_to_file [csv_file_to_save_to]"
+        return "usage: main.py path_to_PDF_file.pdf [OPTIONAL_csv_file_to_save_to].csv"
     elif len(cmd_args) == max(ARGV_LEN) and has_csv_ext(cmd_args[2]) == False:
         return "Exiting program....Ensure csv file to save to has .csv extension"
     
