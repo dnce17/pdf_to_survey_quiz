@@ -1,4 +1,4 @@
-# PDF_to_Survey_Quiz_Converter
+# PDF to Survey/Quiz Converter
 Note: For simplicity, "quiz" will refer to both surveys and quizzes throughout this document
 
 ## <u>Function</u>
