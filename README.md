@@ -5,13 +5,21 @@ Note: For simplicity, "quiz" will refer to both surveys and quizzes throughout t
 This program allows users to process personalized quizzes made in text processors for anyone to take in the terminal. These quizzes are converted from PDF and all answer choices are associated with specific traits (e.g. risk levels, personality type) that are tallied accordingly as users select their answer for each question. Upon completion, users receive results based on their responses. Alongside their name, results can optionally be stored into a CSV file with others who have taken the same quiz. 
 
 ### <u> How to run/test</u>
-* To run --> <b>python main.py path_to_PDF_file.pdf [OPTIONAL_csv_file_to_save_to]</b> in terminal
+To run, type and enter the following in terminal
+1. source .venv/bin/activate
+    * activates the virtual env
+2. python3 -m pip install -r requirements.txt OR pip3 install -r requirements.txt
+    * installs the packages needed to run the program
+3. python3 main.py path_to_PDF_file.pdf [OPTIONAL_csv_file_to_save_to].csv
     * If CSV file is excluded, users take the quiz and get their results. Otherwise, users also provide their name and store their results in the CSV file.
         * Users don't need to create the CSV file beforehand. It will be made if nonexistent.
+
 * To test --> <b>pytest test</b>
+    * If configurations are made to this program, run this to see if certain functions still work properly
 
 ### <u>Technologies Used</u>
 * Python 3.8.5
+    * <b>IMPORTANT</b>: Python 3.8 is minimally required since features from this version are used
 * JSON
 * Text processors tested (were used to make quizzes, saved as PDF, and processed)
     * Microsoft Word
@@ -68,6 +76,8 @@ This program allows users to process personalized quizzes made in text processor
     * has various PDF files that test certain situations and edge cases
     * has few properly formatted quizzes to ensure program works with various quizzes 
     * has test_main.py to ensure functionality of various functions
+* requirements.txt
+    * contains packages/libraries that this program requires to operate
 
 ### Why I Made This Project
 This project idea came about after I finished the [battle style quiz](https://github.com/dnce17/battle_style_quiz) project, which only lets users take a quiz to determine their battle style. While the code in the battle style quiz can be configured to make a personalized quiz, I figured it would be easier if users just needed to pass in a PDF file of a quiz they made in a text processor for the program to process and let users take. 
@@ -78,3 +88,6 @@ Typing a quiz in a text processor also seems more efficient because users can ju
 1) https://stackoverflow.com/questions/713794/catching-an-exception-while-using-a-python-with-statement
 2) https://www.reddit.com/r/cs50/comments/zvr2m3/testing_sysexit_with_pytest/
 3) https://github.com/jsvine/pdfplumber/issues/334
+4) https://stackoverflow.com/questions/21639275/python-syntaxerror-non-ascii-character-xe2-in-file
+5) https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
+6) https://stackoverflow.com/questions/7225900/how-can-i-install-packages-using-pip-according-to-the-requirements-txt-file-from
