@@ -1,10 +1,15 @@
 # PDF to Survey/Quiz Converter
-Note: For simplicity, "quiz" will refer to both surveys and quizzes throughout this document
+<b>Note</b>: For simplicity, "quiz" will refer to both surveys and quizzes throughout this document
 
-## <u>Function</u>
+## Project Inspiration
+This project idea came about after I finished the [battle style quiz](https://github.com/dnce17/battle_style_quiz) project, which lets users take a quiz to determine their battle style (attacker, defender, supporter, all-rounder). While the code in that quiz can be configured to make a personalized quiz, I realized it would be more user-friendly if users could simply just upload a PDF file of a quiz they made in a text processor for others to take.
+
+Typing a quiz in a text processor appears more efficient too because the focus is solely on writing the quiz rather than touching code and possibly causing errors from, say, accidently deleting a bracket.
+
+## Function
 This program allows users to process personalized quizzes made in text processors for anyone to take in the terminal. These quizzes are converted from PDF and all answer choices are associated with specific traits (e.g. risk levels, personality type) that are tallied accordingly as users select their answer for each question. Upon completion, users receive results based on their responses. Alongside their name, results can optionally be stored into a CSV file with others who have taken the same quiz. 
 
-### <u> How to run/test</u>
+### How to run/test
 To run, type and enter the following in terminal
 1. source .venv/bin/activate
     * activates the virtual env
@@ -17,7 +22,7 @@ To run, type and enter the following in terminal
 * To test --> <b>pytest test</b>
     * If configurations are made to this program, run this to see if certain functions still work properly
 
-### <u>Technologies Used</u>
+### Technologies Used
 * Python 3.8.5
     * <b>IMPORTANT</b>: Python 3.8 is minimally required since features from this version are used
 * JSON
@@ -25,7 +30,7 @@ To run, type and enter the following in terminal
     * Microsoft Word
     * Google Docs
 
-### <u>Guidelines To Ensure PDF File Processes Correctly</u>
+### Guidelines To Ensure PDF File Processes Correctly
 * Currently, the program only supports the use of the following bullet style:
 
 <img src="README_assets/bullet_style.png" alt="Dark circle bullets with its next two sub-bullets" width=90>
@@ -54,7 +59,7 @@ To run, type and enter the following in terminal
     * [Risk Level Quiz](test/test_files/proper_format_quizzes/risk_level.pdf)
     * [Battle Style Quiz](test/test_files/proper_format_quizzes/battle_style.pdf)
 
-### <u>Info on Key Files</u>
+### Info on Key Files
 * main.py
     * main function runs all necessary functions to 
         1. convert PDF quiz into JSON format
@@ -78,11 +83,6 @@ To run, type and enter the following in terminal
     * has test_main.py to ensure functionality of various functions
 * requirements.txt
     * contains packages/libraries that this program requires to operate
-
-### Why I Made This Project
-This project idea came about after I finished the [battle style quiz](https://github.com/dnce17/battle_style_quiz) project, which only lets users take a quiz to determine their battle style. While the code in the battle style quiz can be configured to make a personalized quiz, I figured it would be easier if users just needed to pass in a PDF file of a quiz they made in a text processor for the program to process and let users take. 
-
-Typing a quiz in a text processor also seems more efficient because users can just focus on writing their quiz rather than touching code and possibly causing errors from, say, accidently deleting a single bracket. 
 
 ### Credits
 1) https://stackoverflow.com/questions/713794/catching-an-exception-while-using-a-python-with-statement
