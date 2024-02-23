@@ -51,11 +51,13 @@ class Quiz:
         return [trait for trait in self.get_max_traits_total()]
     
     def show_all_traits(self, ordered_list = False):
+        print()
         if ordered_list == True:
             for i, item in enumerate(self.get_all_traits()):
                 print(f"{i + 1}) {item}")
         else:
             print(self.get_all_traits())
+        print()
     
     # PRIVATE METHODS
     @staticmethod
