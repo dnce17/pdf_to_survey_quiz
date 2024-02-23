@@ -11,11 +11,13 @@ This program allows users to process personalized quizzes made in text processor
 
 ### How to run/test
 To run, type and enter the following in terminal
-1. source .venv/bin/activate
+1. python3 -m venv .venv
+    * creates virtual environment
+2. source .venv/bin/activate
     * activates the virtual env
-2. python3 -m pip install -r requirements.txt OR pip3 install -r requirements.txt
+3. python3 -m pip install -r requirements.txt OR pip3 install -r requirements.txt
     * installs the packages needed to run the program
-3. python3 main.py path_to_PDF_file.pdf [OPTIONAL_csv_file_to_save_to].csv
+4. python3 main.py path_to_PDF_file.pdf [OPTIONAL_csv_file_to_save_to].csv
     * If CSV file is excluded, users take the quiz and get their results. Otherwise, users also provide their name and store their results in the CSV file.
         * Users don't need to create the CSV file beforehand. It will be made if nonexistent.
 
