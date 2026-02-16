@@ -118,18 +118,3 @@ class Respondent():
         print("\nRESULTS:")
         for trait in dict(results_list):
             print(f"{trait.lstrip('_').title().replace('_', ' ')}: {vars(self)[trait]}")
-            print(f"Vars print: {vars(self)}")
-
-
-# TEST Purposes - delete before pushing
-if __name__ == "__main__":
-    user = Respondent()
-    survey = Survey("questions.json", user)
-    user.traits_to_track(survey.get_all_traits())
-
-    # survey.show_all_traits()
-    # survey.get_each_trait_count()
-    # survey.show_each_trait_count()
-    # survey.show_all_traits(ordered_list=True)
-    user._show_results()
-    # print(sorted(user.get_results(), key=lambda trait: trait))

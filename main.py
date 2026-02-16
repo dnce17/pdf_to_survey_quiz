@@ -183,8 +183,8 @@ def compile_survey(arr):
             # Append trait to answer choice
             current_question["choices_and_traits"][-1].append(line[2:].title())
         
-        # Appends the last question to arr b/c no more new questions (bullets) after
         if i == len(arr) - 1:
+            # Append the last question b/c loops ends after this, so i > 0 wouldn’t trigger
             survey_data.append(current_question.copy())
 
     return survey_data
