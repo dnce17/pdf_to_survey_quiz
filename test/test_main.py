@@ -1,6 +1,6 @@
 import pytest
-from main import check_argv_len, confirm_name, remove_unrelated, combine_frag
-from quiz import Quiz, Quizzee
+from main import check_argv_len, confirm_name, find_question_start_point, combine_frag
+from survey import Survey, Respondent
 
 # main.py test
 def test_check_argv_len():
@@ -27,17 +27,17 @@ def test_confirm_name(monkeypatch):
         monkeypatch.setattr('builtins.input', lambda _: test)
         assert confirm_name("some name") == False
 
-def test_remove_unrelated():
+def test_find_question_start_point():
     test_arr = [
         ["filler", "FILLER", "---questions---", "something"],
         ["filler", "  ---questions---  ", "something"],
         ["filler", "FILLER", "filLER", "something"]
     ]
-    assert remove_unrelated(test_arr[0]) == test_arr[0][3:]
-    assert remove_unrelated(test_arr[1]) == test_arr[1][2:]
+    assert find_question_start_point(test_arr[0]) == test_arr[0][3:]
+    assert find_question_start_point(test_arr[1]) == test_arr[1][2:]
 
     with pytest.raises(SystemExit) as error:
-       remove_unrelated(test_arr[2])
+       find_question_start_point(test_arr[2])
     assert error.type == SystemExit  
 
 def test_combine_frag():
@@ -58,9 +58,9 @@ def test_combine_frag():
 
 @pytest.fixture
 def q():
-    user = Quizzee()
-    quiz = Quiz("test/test_files/test.json", user)
-    return [quiz, user]
+    user = Respondent()
+    survey = Survey("test/test_files/test_survey.json", user)
+    return [survey, user]
 
 def test_valid_ans(q):
     q = q[0]
@@ -76,9 +76,9 @@ def test_invalid_ans(q):
     for t in tests:
         assert q[0]._validate_ans(t, total_choices) == False
 
-def test_get_max_traits_total(q):
+def test_get_each_trait_count(q):
     desired_results = {"high risk": 3, "low risk": 2, "moderate risk": 3, "no risk": 3, "filler 1 2 5   fill3r": 1}
-    assert q[0].get_max_traits_total() == dict(sorted(desired_results.items()))
+    assert q[0].get_each_trait_count() == dict(sorted(desired_results.items()))
 
 def test_traits_to_track(q):
     q[1].traits_to_track(q[0].get_all_traits())

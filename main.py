@@ -1,11 +1,11 @@
-# Below code needed to allow non-ASCII char like dark circle bullet or else error
+# coding: utf-8 at top here to allow non-ASCII char like dark circle bullet or else error occurs
 # -*- coding: utf-8 -*-
 import sys
 import csv
 import os
 import pdfplumber
 import json
-from quiz import Quiz, Quizzee
+from survey import Survey, Respondent
 from itertools import chain
 
 
@@ -14,7 +14,7 @@ IDENTIFIERS = {
     "sub_bullets_1": ["o ", "○ "],
     "sub_bullets_2": ["▪ ", "■ "]
 }
-EDGE_CASE_ESCAPE = "~o "
+EDGE_CASE_ESCAPE = "~o " # Prevents lines starting with words that begin with "o" from being mistaken for an "o" sub-bullet
 DEFAULT_JSON_NAME = "questions.json"
 ARGV_LEN = [2,3]
 
@@ -23,34 +23,34 @@ def main():
     if argv_issue := check_cmd_args(sys.argv):
         sys.exit(argv_issue)
 
-    # Stage 1: Convert quiz to json
+    # Stage 1: Convert survey to json
     pdf_file = open_file(sys.argv[1])
     text_arr = get_text(pdf_file)
-    quiz_items = filter_text(text_arr)
+    survey_items = filter_text(text_arr)
 
-    # Compile questions, ans, and traits from arr into json
-    make_json(compile_quiz(quiz_items))
+    # Compile questions, answers, and traits from arr into json
+    make_json(compile_survey(survey_items))
 
     # Stage 2: Ensure traits to track are correct
-    user = Quizzee()
-    quiz = Quiz(DEFAULT_JSON_NAME, user)
+    user = Respondent()
+    survey = Survey(DEFAULT_JSON_NAME, user)
 
-    quiz.show_all_traits(ordered_list = True)
+    survey.show_all_traits(ordered_list = True)
     while ask_user(
         "Are the traits to be tracked correct? Type and enter y/n: ", 
         "\nExiting program....Ensure your PDF doc has no misspelled traits and is correctly formatted.\n"
     ) == False:
         continue
 
-    # Stage 3: Doing quiz
+    # Stage 3: Doing survey
     while ask_user(
-        "Type \"y\" to start the quiz or \"n\" if not: ",
-        "\nExiting program....Quizzee not ready yet.\n"
+        "Type \"y\" to start the survey or \"n\" if not: ",
+        "\nExiting program....Respondent not ready yet.\n"
     ) == False:
         continue
 
-    user.traits_to_track(quiz.get_all_traits())
-    quiz.do_quiz()
+    user.traits_to_track(survey.get_all_traits())
+    survey.do_survey()
 
     # Stage 4: Save result to csv file, if desired
     if len(sys.argv) == max(ARGV_LEN):
@@ -59,7 +59,7 @@ def main():
             if confirm_name(" ".join(name)) == True:
                 break
 
-        # Create directory to store csv if nonexistent
+        # Create directory to store csv, if nonexistent
         csv_dir_name = "csv_files"
         if check_path_exist(csv_dir_name) == False:
             create_csv_dir(csv_dir_name)
@@ -73,7 +73,6 @@ def main():
             # Add header to file
             add_csv_headers(f"csv_files/{csv_file}", fieldnames)
 
-        # Store highest result
         store_results(name, user.get_results(), f"csv_files/{csv_file}", fieldnames)
             
 
@@ -117,18 +116,22 @@ def get_text(f):
 
 
 def filter_text(arr):
-    # Remove everything before "---questions---"" in arr
-    first_filter = remove_unrelated(arr)
+    # Remove everything before ---questions--- string in array
+    question_section = find_question_start_point(arr)
 
     # Combine fragmented sentences that were split from line break
-    quiz_items = combine_frag(first_filter)
+    survey_items = combine_frag(question_section)
 
-    return quiz_items
+    return survey_items
 
 
-def remove_unrelated(arr):
+def find_question_start_point(arr):
+    """
+    Only returns all items in the list that appear after the '---questions---'
+    string, which indicates where survey questions begin
+    """
     try:
-        # Search ---questions-- case-insensitive
+        # Search for ---questions-- string case-insensitive
         index = [item.lower().strip() for item in arr].index('---questions---')
     except ValueError:
         sys.exit("Ensure that ---questions--- is present in your PDF to help indicate where questions begin")
@@ -137,25 +140,29 @@ def remove_unrelated(arr):
 
 
 def combine_frag(arr):
+    """
+    Combines fragmented sentences
+    Example:
+        ["o First line", "continues here", "o Second line"] turns into ["o First line continues here", "o Second line"]
+    """
     updated_arr = []
-    for _, item in enumerate(arr):
-        if item[0:2] in list(chain(*IDENTIFIERS.values())):
-            # Append b/c "in IDENTIFIERS" means it's a new bullet (hence, new item in arr)
-            updated_arr.append(item)
+    for _, item_str in enumerate(arr):
+        if item_str[0:2] in list(chain(*IDENTIFIERS.values())):
+            updated_arr.append(item_str)
         else:
-            # ~o is escape char to differentiate b/w o sub-bullet vs starting o in new line
-            if item[0:3] == EDGE_CASE_ESCAPE:
-                updated_arr[-1] += f" {item.replace('~', '')}"
+            if item_str[0:3] == EDGE_CASE_ESCAPE:
+                # Remove the "~" escape marker, treating "~o" as normal letter "o"
+                updated_arr[-1] += f" {item_str.replace('~', '')}"
             else:
                 # Combine fragmented sentences together as 1 item in arr
-                updated_arr[-1] += f" {item}"
+                updated_arr[-1] += f" {item_str}"
     
     return updated_arr
 
 
-def compile_quiz(arr):
-    dict_arr = []
-    dict = {
+def compile_survey(arr):
+    survey_data = []
+    current_question = {
         "question": "",
         "choices_and_traits": []
     }
@@ -163,22 +170,24 @@ def compile_quiz(arr):
     for i, line in enumerate(arr):
         if line[0:2] in IDENTIFIERS["bullets"]:
             if i > 0:
-                dict_arr.append(dict.copy())
+                survey_data.append(current_question.copy())
 
-            # Reset choices_and_traits if new question (aka new bullet)
-            dict["question"] = line[2:]
-            dict["choices_and_traits"] = []
+            # New bullet means new question, so reset choices_and_traits 
+            current_question["question"] = line[2:]
+            current_question["choices_and_traits"] = []
 
         elif line[0:2] in IDENTIFIERS["sub_bullets_1"]:
-            dict["choices_and_traits"].append([line[2:]])
+            # Append answer choice
+            current_question["choices_and_traits"].append([line[2:]])
         elif line[0:2] in IDENTIFIERS["sub_bullets_2"]:
-            dict["choices_and_traits"][-1].append(line[2:].title())
+            # Append trait to answer choice
+            current_question["choices_and_traits"][-1].append(line[2:].title())
         
         # Appends the last question to arr b/c no more new questions (bullets) after
         if i == len(arr) - 1:
-            dict_arr.append(dict.copy())
+            survey_data.append(current_question.copy())
 
-    return dict_arr
+    return survey_data
 
 
 def make_json(dict_arr):
