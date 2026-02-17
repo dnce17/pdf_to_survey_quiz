@@ -100,7 +100,7 @@ To get a local copy up and running, follow these steps:
     python3 main.py path_to_PDF_file.pdf [results.csv]
     ```
     * Replace **path_to_PDF_file.pdf** with the path of your PDF survey
-    * **Optionally**, replace **[results]** with any name. The results of the survey will be saved in this CSV file. If omitted, no CSV will be created and results will not be saved anywhere.
+    * **Optionally**, replace **[results]** with any name. The results of the survey will be saved in this CSV file. If omitted, no CSV will be created or updated (if it already exists), and the results will not be saved anywhere.
         * **NOTE:** Users don't need to create the CSV file beforehand. It will be made if nonexistent.
 
         **Example**
@@ -108,12 +108,13 @@ To get a local copy up and running, follow these steps:
         python3 main.py desktop/some_folder/personality_test.pdf personality_results.csv
         ```
 4. The survey will now begin. Follow the prompts.
+5. After completing the survey, if you provided the optional CSV file name, the file will appear in a folder called **csv_files** where results will be stored. If the file already exists, it will be updated. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-## Guidelines - Formatting the Survey
+## Guidelines - Structuring the Survey
 * Currently, the program only supports this bullet style:
 <img src="README_assets/bullet_style.png" alt="Dark circle bullets with its next two sub-bullets" width=90>
 
@@ -149,7 +150,7 @@ To get a local copy up and running, follow these steps:
 Contains all survey-related functions, which are imported to main.py
 
 #### Survey class
-* do_survey() is the primary function stimulating the survey-taking process
+* do_survey() is the primary function simulating the survey-taking process
     * Displays questions and answer choices
     * Validates user input
     * Uses the **Respondent** object to tally traits and display final results
@@ -162,7 +163,11 @@ Contains all survey-related functions, which are imported to main.py
 ### test
 * Contains PDF files for edge-case and scenario testing
 * Includes properly formatted sample surveys
-* test_main.py verifies various core functionality
+* test_main.py verifies various core functionalities
+  * Tests were ran using the following command:
+    ```sh
+    pytest test
+    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -174,6 +179,5 @@ Contains all survey-related functions, which are imported to main.py
 * Issue on pdfplumber parsing – [GitHub](https://github.com/jsvine/pdfplumber/issues/334)
 * Handling non-ASCII characters in Python – [StackOverflow](https://stackoverflow.com/questions/21639275/python-syntaxerror-non-ascii-character-xe2-in-file)
 * Installing packages and virtual environments – [Python Packaging Guide](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
-* Installing packages from `requirements.txt` – [StackOverflow](https://stackoverflow.com/questions/7225900/how-can-i-install-packages-using-pip-according-to-the-requirements-txt-file-from)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
