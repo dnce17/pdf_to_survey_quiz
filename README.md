@@ -17,7 +17,7 @@
       <a href="#usage">Usage</a>
     </li>
     <li>
-      <a href="#guidelines---formatting-the-survey">Guidelines - Formatting the Survey</a>
+      <a href="#guidelines---structuring-the-survey">Guidelines - Structuring the Survey</a>
     </li>
     <li>
       <a href="#info-on-key-files">Info on Key Files</a>
