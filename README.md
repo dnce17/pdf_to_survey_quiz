@@ -2,7 +2,7 @@
 <a id="readme-top"></a>
 
 ## About
-This project processes surveys that users create in a word processor (e.g. Word or Google Docs) and save as PDFs. The program parses the PDF and allows users to take the survey interactively in the terminal. The program links certain answer choices to predefined traits (e.g. low risk, moderate risk, high risk, etc.), and tallies them accordingly as users select their answer for each question. Responses are optionally saved in a CSV file, allowing results from multiple users to be collected in the same file.
+This project processes surveys that users create in a word processor (e.g. Word or Google Docs) and save as PDFs. The program parses the PDF into JSON and allows users to take the survey interactively in the terminal. The program links certain answer choices to predefined traits (e.g. low risk, moderate risk, high risk, etc.), and tallies them accordingly as users select their answer for each question. Responses are optionally saved in a CSV file, allowing results from multiple users to be collected in the same file.
 
 
 While initially developed as a practice project in text processing, terminal interaction, and basic data tracking, the structure allows for potential expansion. For example, in a healthcare context, it could be adapted to process screening surveys and map responses to risk levels or other metrics.
@@ -54,6 +54,13 @@ To get a local copy up and running, follow these steps:
     * Here are examples of properly formatted surveys:
         * [Risk Level Survey](test/test_files/properly_formatted_surveys/risk_level.pdf)
         * [FIghting Style Survey](test/test_files/properly_formatted_surveys/fighting_style.pdf)
+    * You can try out these surveys by running one of the provided examples
+        ```sh
+        python3 main.py test/test_files/properly_formatted_surveys/risk_level.pdf
+        ```
+        ```sh
+        python3 main.py test/test_files/properly_formatted_surveys/fighting_style.pdf
+        ```
 2. Save the survey as PDF
 3. To take the survey, ensure you're in the project folder and run the following command in the terminal:
     ```sh
@@ -62,7 +69,7 @@ To get a local copy up and running, follow these steps:
     * Replace **path_to_PDF_file.pdf** with the path of your PDF
     * Optionally, replace **[results]** with any name. The results of the survey will be saved in this CSV file. If omitted, no CSV will be created and results will not be saved anywhere.
         * **NOTE:** Users don't need to create the CSV file beforehand. It will be made if nonexistent.
-    
+
         **Example**
         ```sh
         python3 main.py desktop/some_folder/personality_test.pdf personality_results.csv
@@ -95,8 +102,44 @@ To get a local copy up and running, follow these steps:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Info on Key Files
+### main.py
+* Contains all the PDF and CSV file processing functions
 
-### Acknowledgments
+#### main()
+* Converts PDF survey into a JSON file called **questions.json**
+* Allows users to verify traits to be tracked
+* Runs the survey and displays results
+* Optionally saves results to a CSV file
+
+### survey.py
+Contains all survey-related functions, which are imported to main.py
+
+#### Survey class
+* do_survey() is the primary function stimulating the survey-taking process. It shows questions, answer choices, and validates the choice selected. Afterwards, it uses a Respondent class object to tally the trait(s) associated with that choice and show results once survey is done
+* contains other functions that can be called (e.g. show all traits being tallied in the survey, count the max possible total of each trait)
+
+* do_survey() is the primary function stimulating the survey-taking process
+    * Displays questions and answer choices
+    * Validates user input
+    * Uses the **Respondent** object to tally traits and display final results
+* Includes helper methods (e.g. list all traits being tracked, get total count of each trait that exist in survey)
+
+#### Respondent class
+* Dynamically creates instance attributes for each trait using traits_to_track(), allowing them to be tallied
+* Provides methods to tally traits and display results
+
+### test
+* Contains PDF files for edge-case and scenario testing
+* Includes properly formatted sample surveys
+* has few properly formatted surveyzes to ensure program works with various surveyzes 
+* test_main.py verifies various core functionality
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+## Acknowledgments
 * Catching exceptions with a Python `with` statement – [StackOverflow](https://stackoverflow.com/questions/713794/catching-an-exception-while-using-a-python-with-statement)
 * Testing `SystemExit` with `pytest` – [Reddit CS50 discussion](https://www.reddit.com/r/cs50/comments/zvr2m3/testing_sysexit_with_pytest/)
 * Issue on pdfplumber parsing – [GitHub](https://github.com/jsvine/pdfplumber/issues/334)
