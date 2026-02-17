@@ -1,95 +1,107 @@
 # PDF to Survey Converter
-<b>Note</b>: For simplicity, "survey" will refer to both surveys and surveyzes throughout this document
+<a id="readme-top"></a>
 
-## Project Inspiration
-This project idea came about after I finished the [battle style survey](https://github.com/dnce17/battle_style_survey) project, which lets users take a survey to determine their battle style (attacker, defender, supporter, all-rounder). While the code in that survey can be configured to make a personalized survey, I realized it would be more user-friendly if users could simply just upload a PDF file of a survey they made in a text processor for others to take.
+## About
+This project processes surveys that users create in a word processor (e.g. Word or Google Docs) and save as PDFs. The program parses the PDF and allows users to take the survey interactively in the terminal. The program links certain answer choices to predefined traits (e.g. low risk, moderate risk, high risk, etc.), and tallies them accordingly as users select their answer for each question. Responses are optionally saved in a CSV file, allowing results from multiple users to be collected in the same file.
 
-Typing a survey in a text processor appears more efficient too because the focus is solely on writing the survey rather than touching code and possibly causing errors from, say, accidently deleting a bracket.
 
-## Function
-This program allows users to process personalized surveyzes made in text processors for anyone to take in the terminal. These surveyzes are converted from PDF and all answer choices are associated with specific traits (e.g. risk levels, personality type) that are tallied accordingly as users select their answer for each question. Upon completion, users receive results based on their responses. Alongside their name, results can optionally be stored into a CSV file with others who have taken the same survey. 
+While initially developed as a practice project in text processing, terminal interaction, and basic data tracking, the structure allows for potential expansion. For example, in a healthcare context, it could be adapted to process screening surveys and map responses to risk levels or other metrics.
 
-### How to run/test
-To run, type and enter the following in terminal
-1. python3 -m venv .venv
-    * creates virtual environment
-2. source .venv/bin/activate
-    * activates the virtual env
-3. python3 -m pip install -r requirements.txt OR pip3 install -r requirements.txt
-    * installs the packages needed to run the program
-4. python3 main.py path_to_PDF_file.pdf [OPTIONAL_csv_file_to_save_to].csv
-    * If CSV file is excluded, users take the survey and get their results. Otherwise, users also provide their name and store their results in the CSV file.
-        * Users don't need to create the CSV file beforehand. It will be made if nonexistent.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-* To test --> <b>pytest test</b>
-    * If configurations are made to this program, run this to see if certain functions still work properly
 
-### Technologies Used
-* Python 3.8.5
-    * <b>IMPORTANT</b>: Python 3.8 is minimally required since features from this version are used
-* JSON
-* Text processors tested (were used to make surveyzes, saved as PDF, and processed)
-    * Microsoft Word
-    * Google Docs
 
-### Guidelines To Ensure PDF File Processes Correctly
-* Currently, the program only supports the use of the following bullet style:
+### Built With
+- **Languages:** Python 3.8.5
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+
+<!-- GETTING STARTED -->
+## Installation - Getting Started
+
+To get a local copy up and running, follow these steps:
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/dnce17/crochet_shop_site.git
+   ```
+2. Navigate into the project folder
+   ```sh
+   cd <project-folder>
+   ```
+3. Create a virtual environment (venv)
+   ```sh
+   python3 -m venv .venv
+   ```
+4. Activate venv
+   ```sh
+   source .venv/bin/activate
+   ```
+5. Install the required packages
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+## Usage 
+1. Create a survey with a word processor like Word or Google Doc, and follow the [template](README_assets/template.pdf)
+    * Here are examples of properly formatted surveys:
+        * [Risk Level Survey](test/test_files/properly_formatted_surveys/risk_level.pdf)
+        * [FIghting Style Survey](test/test_files/properly_formatted_surveys/fighting_style.pdf)
+2. Save the survey as PDF
+3. To take the survey, ensure you're in the project folder and run the following command in the terminal:
+    ```sh
+    python3 main.py path_to_PDF_file.pdf [results].csv
+    ```
+    * Replace **path_to_PDF_file.pdf** with the path of your PDF
+    * Optionally, replace **[results]** with any name. The results of the survey will be saved in this CSV file. If omitted, no CSV will be created and results will not be saved anywhere.
+        * **NOTE:** Users don't need to create the CSV file beforehand. It will be made if nonexistent.
+    
+        **Example**
+        ```sh
+        python3 main.py desktop/some_folder/personality_test.pdf personality_results.csv
+        ```
+4. The survey will now begin
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+## Guidelines - Formatting the Survey
+* Currently, the program only supports this bullet style:
 <img src="README_assets/bullet_style.png" alt="Dark circle bullets with its next two sub-bullets" width=90>
 
-* Add ---Questions--- <b>(case-insensitive)</b> right before the questions begins 
-    * this helps the program know where questions begin
-    * Above ---Questions--- can be anything. It will be ignored when processed
-* Each answer choice can have <b>1 or more</b> traits associated with it and is case-insensitive 
-    * e.g. "lOw RiSK" is treated the same as "low risk"
-* Having none or any empty lines between questions, answer choices, and/or traits will still process fine
+* Regarding the [template](README_assets/template.pdf)
+    * The **--Questions---** (case-insensitive) string identifies where the question section begins. Anything above this string will be ignored, so you can put anything there. 
+    * Each answer choice can have **1 or more** traits associated with it and is **case-insensitive**
+        * e.g. "lOw RiSK" is treated the same as "low risk" 
+    * Having empty lines between questions, answer choices, and traits will still process correctly
+    ![empty lines between questions, answer choices, and traits](README_assets/empty_lines.png)
+    * Any unbulleted text between bullets that is not part of a question, answer choice, or trait will not cause errors, but will affect how the survey is displayed
+    ![Example of unbulleted character error](README_assets/unbulleted_item_err.png)
+    * If a line starts with a lowercase `o` by itself (due to text wrap or an intentional line break), prepend a `~` to it. The `~` will not appear when users take the survey.  
+        * **Reason:** `o` may be interpreted as a sub-bullet. Adding `~` tells the program that this line is a continuation of the previous sentence.  
+        ![Example of using ~o](README_assets/o_escape.png)
+        * You do **NOT** need `~` if the `o` is part of a larger word  
+            * e.g. `~`: `"oo"`, `"oh"`, `"octopus"`, `"o,"`, `"o?"`
 
-#### CAUTION
-* Having any unbulleted characters between bullets and/or sub-bullets that are not intended to be part of a question, answer choice, and/or trait before it will not raise errors, but text display issues with the survey
 
-![Example of unbulleted character error](README_assets/unbulleted_item_err.png)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-* If there's a line starting with lowercase o by itself (example below) regardless from text wrap or intentional line break, put a ~ before it. The ~ will not appear when users take the survey. 
-    * Reason: o is sometimes treated as a sub-bullet, so ~ lets the program know that the line beginning with o is part of the sentence before it.
-    * You do <b>NOT</b> need ~ if o is part of a larger word or has punctuation 
-        * e.g. "oo", "oh", "octopus", "o,", "o?" does not count
 
-![Example of using ~o](README_assets/o_escape.png)
 
-* Click the links below to see a template and some examples
-    * [Template](README_assets/template.pdf)
-    * [Risk Level Survey](test/test_files/proper_format_surveyzes/risk_level.pdf)
-    * [Battle Style Survey](test/test_files/proper_format_surveyzes/battle_style.pdf)
+### Acknowledgments
+* Catching exceptions with a Python `with` statement – [StackOverflow](https://stackoverflow.com/questions/713794/catching-an-exception-while-using-a-python-with-statement)
+* Testing `SystemExit` with `pytest` – [Reddit CS50 discussion](https://www.reddit.com/r/cs50/comments/zvr2m3/testing_sysexit_with_pytest/)
+* Issue on pdfplumber parsing – [GitHub](https://github.com/jsvine/pdfplumber/issues/334)
+* Handling non-ASCII characters in Python – [StackOverflow](https://stackoverflow.com/questions/21639275/python-syntaxerror-non-ascii-character-xe2-in-file)
+* Installing packages and virtual environments – [Python Packaging Guide](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
+* Installing packages from `requirements.txt` – [StackOverflow](https://stackoverflow.com/questions/7225900/how-can-i-install-packages-using-pip-according-to-the-requirements-txt-file-from)
 
-### Info on Key Files
-* main.py
-    * main function runs all necessary functions to 
-        1. convert PDF survey into JSON format
-        2. allow users to check if the traits to tally are correct
-        3. allow users to take survey and get results
-        4. optionally save results in a CSV file
-    * contains all PDF and CSV file processing functions:
-        * opening PDF file, extracting + filtering its text, and compiling it into a JSON file
-        * creation of CSV file and storing results
-* survey.py
-    * contains all survey-related functions imported to main
-    * Survey class
-        * do_survey() is the primary function stimulating the survey-taking process. It shows questions, answer choices, and validates the choice selected. Afterwards, it uses a Respondent class object to tally the trait(s) associated with that choice and show results once survey is done
-        * contains other functions that can be called (e.g. show all traits being tallied in the survey, count the max possible total of each trait)
-    * Respondent class
-        * traits_to_track() dynamically creates properties of all traits in a certain survey, allowing them to be tallied
-        * has functions that show results and tally the traits, which are used in the Survey class's do_survey()
-* test
-    * has various PDF files that test certain situations and edge cases
-    * has few properly formatted surveyzes to ensure program works with various surveyzes 
-    * has test_main.py to ensure functionality of various functions
-* requirements.txt
-    * contains packages/libraries that this program requires to operate
-
-### Credits
-1) https://stackoverflow.com/questions/713794/catching-an-exception-while-using-a-python-with-statement
-2) https://www.reddit.com/r/cs50/comments/zvr2m3/testing_sysexit_with_pytest/
-3) https://github.com/jsvine/pdfplumber/issues/334
-4) https://stackoverflow.com/questions/21639275/python-syntaxerror-non-ascii-character-xe2-in-file
-5) https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
-6) https://stackoverflow.com/questions/7225900/how-can-i-install-packages-using-pip-according-to-the-requirements-txt-file-from
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

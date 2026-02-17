@@ -14,7 +14,7 @@ IDENTIFIERS = {
     "sub_bullets_1": ["o ", "○ "],
     "sub_bullets_2": ["▪ ", "■ "]
 }
-EDGE_CASE_ESCAPE = "~o " # Prevents lines starting with words that begin with "o" from being mistaken for an "o" sub-bullet
+EDGE_CASE_ESCAPE = "~o " # Prevents lines starting with letter "o" from being mistaken as "o" sub-bullet
 DEFAULT_JSON_NAME = "questions.json"
 ARGV_LEN = [2,3]
 
