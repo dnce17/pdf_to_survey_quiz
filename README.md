@@ -129,7 +129,7 @@ To get a local copy up and running, follow these steps:
         * **Reason:** `o` may be interpreted as a sub-bullet. Adding `~` tells the program that this line is a continuation of the previous sentence.  
         ![Example of using ~o](README_assets/o_escape.png)
         * **NOTE:** You do **NOT** need `~` if the `o` is part of a word or is followed by punctuation
-            * e.g. `~`: `"oo"`, `"oh"`, `"octopus"`, `"o,"`, `"o?"`
+            * e.g: `"oo"`, `"oh"`, `"octopus"`, `"o,"`, `"o?"`
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
