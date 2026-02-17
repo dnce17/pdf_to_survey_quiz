@@ -125,10 +125,10 @@ To get a local copy up and running, follow these steps:
     * Having empty lines between questions, answer choices, and traits will still process correctly
     ![empty lines between questions, answer choices, and traits](README_assets/empty_lines.png)
     * Any unbulleted text between bullets that is not part of a question, answer choice, or trait will not cause errors, but will cause issues with how the survey is displayed
-    ![Example of unbulleted character error](README_assets/unbulleted_item_err.png)
+    ![Example of unbulleted character error](README_assets/unbulleted_item_error.png)
     * If a line starts with a lowercase `o` (due to text wrap or an intentional line break), prepend a `~` to it. The `~` will not appear when users take the survey.  
         * **Reason:** `o` may be interpreted as a sub-bullet. Adding `~` tells the program that this line is a continuation of the previous sentence.  
-        ![Example of using ~o](README_assets/o_escape.png)
+        ![Example of using ~o](README_assets/o_escape_marker.png)
         * **NOTE:** You do **NOT** need `~` if the `o` is part of a word or is followed by punctuation
             * e.g: `"oo"`, `"oh"`, `"octopus"`, `"o,"`, `"o?"`
 
